@@ -30,7 +30,9 @@
 
 // Scaffolding
 @body-background:         #3d3d3d;
-@text-color:              @black-80;
+@text-color:              #222;
+@border-color:            #4d4d4d;
+@background-color:        #202020;
 
 // Links
 @link-color:              #468607;
@@ -43,18 +45,11 @@
 @font-family-base:        @font-family-sans-serif;
 
 @phi:                     1.61803399;
-@size-nano:               unit(pow(@phi, -4), rem);
-@size-micro:              unit(pow(@phi, -3), rem);
-@size-mini:               unit(pow(@phi, -2), rem);
-@size-small:              unit(pow(@phi, -1), rem);
-@size-medsmall:           unit(pow(@phi, -0.5), rem);
-@size-base:               unit(pow(@phi, 0), rem);
-@size-medium:             unit(pow(@phi, 0.5), rem);
-@size-large:              unit(pow(@phi, 1), rem);
-@size-larger:             unit(pow(@phi, 2), rem);
-@size-huge:               unit(pow(@phi, 3), rem);
-@size-massive:            unit(pow(@phi, 4), rem);
-@size-epic:               unit(pow(@phi, 5), rem);
+@size-tiny:               unit(1 / (@phi * @phi), rem);
+@size-small:              unit(1 / @phi, rem);
+@size-base:               unit(1, rem);
+@size-large:              unit(@phi, rem);
+@size-huge:               unit(@phi * @phi, rem);
 
 @line-height-base:        1.468;
 
