@@ -1,6 +1,7 @@
 @import "normalize.lessimport";
 @import "preboot.lessimport";
 @import "codemirror.lessimport";
+@import "ambiance.lessimport";
 
 body {
 	color: @text-color;
@@ -35,10 +36,6 @@ h4 { font-weight: 400; font-style: italic; }
 h5 { font-size: @size-base; }
 h6 { font-size: @size-small; }
 
-code, kbd, pre, samp {
-	font-family: @font-family-monospace;
-}
-
 #editor, #sequencer, #controls {
 	position: absolute;
 }
@@ -55,6 +52,7 @@ code, kbd, pre, samp {
 	left: 50%;
 	right: 0;
 	bottom: 10%;
+	border-left: 1px solid #4d4d4d;
 }
 
 #controls {
@@ -62,4 +60,5 @@ code, kbd, pre, samp {
 	bottom: 0;
 	left: 50%;
 	right: 0;
+	border-left: 1px solid #4d4d4d;
 }
