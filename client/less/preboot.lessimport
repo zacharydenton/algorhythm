@@ -50,6 +50,7 @@
 @size-base:               unit(1, rem);
 @size-large:              unit(@phi, rem);
 @size-huge:               unit(@phi * @phi, rem);
+@size-massive:            unit(@phi * @phi * @phi, rem);
 
 @line-height-base:        1.468;
 
