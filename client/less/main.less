@@ -1,5 +1,6 @@
-@import "normalize.less";
-@import "preboot.less";
+@import "normalize.lessimport";
+@import "preboot.lessimport";
+@import "codemirror.lessimport";
 
 body {
 	color: @text-color;
@@ -38,3 +39,27 @@ code, kbd, pre, samp {
 	font-family: @font-family-monospace;
 }
 
+#editor, #sequencer, #controls {
+	position: absolute;
+}
+
+#editor {
+	top: 0;
+	left: 0;
+	right: 50%;
+	bottom: 0;
+}
+
+#sequencer {
+	top: 0;
+	left: 50%;
+	right: 0;
+	bottom: 10%;
+}
+
+#controls {
+	top: 90%;
+	bottom: 0;
+	left: 50%;
+	right: 0;
+}

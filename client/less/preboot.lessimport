@@ -29,8 +29,8 @@
 @brand-info:              #5bc0de;
 
 // Scaffolding
-@body-background:         @black-90;
-@text-color:              #3d3e3d;
+@body-background:         @black-10;
+@text-color:              @black-80;
 
 // Links
 @link-color:              #468607;
@@ -43,18 +43,18 @@
 @font-family-base:        @font-family-sans-serif;
 
 @phi:                     1.61803399;
-@size-base:               1rem;
-@size-nano:               pow(@phi, -4) * @size-base;
-@size-micro:              pow(@phi, -3) * @size-base;
-@size-mini:               pow(@phi, -2) * @size-base;
-@size-small:              pow(@phi, -1) * @size-base;
-@size-medsmall:           pow(@phi, -0.5) * @size-base;
-@size-medium:             pow(@phi, 0.5) * @size-base;
-@size-large:              pow(@phi, 1) * @size-base;
-@size-larger:             pow(@phi, 2) * @size-base;
-@size-huge:               pow(@phi, 3) * @size-base;
-@size-massive:            pow(@phi, 4) * @size-base;
-@size-epic:               pow(@phi, 5) * @size-base;
+@size-nano:               unit(pow(@phi, -4), rem);
+@size-micro:              unit(pow(@phi, -3), rem);
+@size-mini:               unit(pow(@phi, -2), rem);
+@size-small:              unit(pow(@phi, -1), rem);
+@size-medsmall:           unit(pow(@phi, -0.5), rem);
+@size-base:               unit(pow(@phi, 0), rem);
+@size-medium:             unit(pow(@phi, 0.5), rem);
+@size-large:              unit(pow(@phi, 1), rem);
+@size-larger:             unit(pow(@phi, 2), rem);
+@size-huge:               unit(pow(@phi, 3), rem);
+@size-massive:            unit(pow(@phi, 4), rem);
+@size-epic:               unit(pow(@phi, 5), rem);
 
 @line-height-base:        1.468;
 
