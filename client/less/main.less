@@ -1,0 +1,40 @@
+@import "normalize.less";
+@import "preboot.less";
+
+body {
+	color: @text-color;
+	font-size: @size-base;
+	font-family: @font-family-base;
+	line-height: @line-height-base;
+	background-color: @body-background;
+}
+
+a {
+	color: @link-color;
+
+	&:hover {
+		color: @link-color-hover;
+	}
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: @headings-font-family;
+	font-weight: @headings-font-weight;
+	text-rendering: optimizeLegibility;
+
+	a {
+		text-decoration: none;
+	}
+}
+
+h1 { font-size: @size-huge; }
+h2 { font-size: @size-larger; }
+h3 { font-size: @size-large; }
+h4 { font-weight: 400; font-style: italic; }
+h5 { font-size: @size-base; }
+h6 { font-size: @size-small; }
+
+code, kbd, pre, samp {
+	font-family: @font-family-monospace;
+}
+
