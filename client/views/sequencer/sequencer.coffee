@@ -7,6 +7,11 @@ buildKeyboard = ->
     if Algo.isAccidental(note)
       $key.addClass 'accidental'
     $keyboard.append $key
+    
+    unless Algo.isAccidental(note)
+      $spacer = $('<li>')
+      $spacer.addClass 'spacer'
+      $keyboard.append $spacer
 
   $keyboard
 
