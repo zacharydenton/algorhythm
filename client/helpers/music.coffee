@@ -31,18 +31,23 @@ class Algo.Metronome
       @beatCount += 1
       @lastBeat += @spb()
 
-Algo.toFrequency = (note) ->
-  Math.pow(2, (note - 69) / 12) * 440.0
+noteNames = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]
 
-Algo.toNote = (frequency) ->
-  12 * (Math.log(frequency / 440.0) / Math.log(2)) + 69
+Algo.name = (note) ->
+  "#{noteNames[note % 12]}#{Algo.octave note}"
 
-Algo.noteName = (note) ->
-  noteNames = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
-  noteNames[note % 12]
+Algo.note = (name) ->
+  if name.length == 3
+    letter = name.slice(0, -1)
+    octave = parseInt name[2]
+  else
+    letter = name[0]
+    octave = parseInt name[1]
+  index = _.indexOf noteNames, letter
+  (12 * (octave + 1)) + index
 
-Algo.noteOctave = (note) ->
+Algo.octave = (note) ->
   Math.floor(note / 12) - 1
 
 Algo.isAccidental = (note) ->
-  Algo.noteName(note).length == 2
+  Algo.name(note).length == 3
