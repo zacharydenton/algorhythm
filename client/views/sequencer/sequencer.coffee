@@ -5,6 +5,7 @@ class Sequencer
     @buildKeyboard()
     @buildGrid()
     @pixelsPerSecond = 200
+    @current = 0
     @notes = []
 
   buildKeyboard: ->
@@ -33,7 +34,8 @@ class Sequencer
     @$el.append @$grid
     @$grid
 
-  insert: (note, start, duration) ->
+  insert: (note, duration, start) ->
+    start ?= @current
     $note = $('<span>')
     noteObj =
       note: note
@@ -46,18 +48,44 @@ class Sequencer
     $note.css 'left', @pixelsPerSecond * noteObj.start
     $note.css 'width', @pixelsPerSecond * noteObj.duration
     @$grid.append $note
-    @notes.push noteObj
+    @notes[start] ?= []
+    @notes[start].push noteObj
     noteObj
 
   play: ->
-    time = Algo.audioContext.currentTime
-    for note in @notes
-      Algo.instrument.noteOn note.note, time + note.start
-      Algo.instrument.noteOff note.note, time + note.start + note.duration
+    @current = 0
+    @noteTime = 0.0
+    @startTime = Algo.audioContext.currentTime
+    @schedule()
+
+  stop: ->
+    return unless @ticker?
+    Meteor.clearTimeout @ticker
 
   clear: ->
     @notes = []
     @$grid.empty()
+
+  schedule: =>
+    currentTime = Algo.audioContext.currentTime
+    currentTime -= @startTime # normalize to 0
+
+    while @noteTime < currentTime + 0.040
+      if @notes[@current]?
+        for note in @notes[@current]
+          contextPlayTime = note.start + @startTime
+          Algo.instrument.noteOn note.note, contextPlayTime
+          Algo.instrument.noteOff note.note, contextPlayTime + note.duration
+
+      @advanceBeat()
+
+    @ticker = Meteor.setTimeout @schedule, 0
+
+  advanceBeat: ->
+    @current += 1
+    @noteTime += Algo.metronome.spb()
+    if Algo.update?
+      Algo.update()
 
 Template.sequencer.rendered = ->
   Algo.sequencer = new Sequencer $('#piano-roll'), 31, 88

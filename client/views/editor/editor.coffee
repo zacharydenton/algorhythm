@@ -36,7 +36,7 @@ Template.editor.rendered = ->
 
 Algo.register 'duration'
 Algo.register 'minNote', 31, 88, 60
-Algo.register 'maxNote', 31, 88, 72
+Algo.register 'maxNote', 31, 88, 71
 Algo.register 'chaos', 1, 100, 22
 
 Algo.generate = ->
@@ -48,8 +48,8 @@ Algo.generate = ->
   Algo.sequencer.clear()
   for measure in [0..duration]
     for note in (n for n in [min..max] when Math.random() < chaos and not Algo.isAccidental(n))
-      dur1 = Algo.choose [0, 1, 2]
-      dur2 = Algo.choose [1, 2, 4, 8]
+      dur1 = Algo.choose [0..2]
+      dur2 = Algo.choose [2, 4]
       Algo.sequencer.insert note, measure + dur1, dur2
 
 Algo.generate() and Algo.sequencer.play()
