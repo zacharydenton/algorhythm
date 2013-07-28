@@ -18,22 +18,39 @@ Template.editor.rendered = ->
     autofocus: on
     extraKeys:
       "Tab": "autocomplete"
-      "Ctrl-Enter": "evalSelection"
+      "Ctrl-Enter": "evalLine"
+      "Shift-Enter": "evalSelection"
       "Ctrl-Alt-Enter": "evalAll"
   CodeMirror.commands.autocomplete = autocomplete
   CodeMirror.commands.evalAll = (cm) ->
     Algo.eval cm.getValue()
   CodeMirror.commands.evalSelection = (cm) ->
     Algo.eval cm.getSelection()
+  CodeMirror.commands.evalLine = (cm) ->
+    Algo.eval cm.getLine(cm.getCursor().line)
   editor = CodeMirror @find('#editor'), opts
   editor.setValue """
-# Press ctrl-alt-enter to execute code
+# Press ctrl-alt-enter to evaluate code
+# Press ctrl-enter to eval current line
+# Press shift-enter to eval selection
 
-for measure in [0..30]
-  for note in (n for n in [60..72] when Math.random() < 0.318 and not Algo.isAccidental(n))
-    dur1 = Algo.choose [0, 1/2]
-    dur2 = Algo.choose [1, 2, 4, 8]
-    Algo.sequencer.insert note, measure + dur1, dur2
+Algo.register 'duration'
+Algo.register 'minNote', 31, 88, 60
+Algo.register 'maxNote', 31, 88, 72
+Algo.register 'chaos', 1, 100, 22
 
-Algo.sequencer.play()
+Algo.generate = ->
+  duration = Algo.get 'duration'
+  min = Algo.get 'minNote'
+  max = Algo.get 'maxNote'
+  chaos = 0.01 * Algo.get 'chaos'
+
+  Algo.sequencer.clear()
+  for measure in [0..duration]
+    for note in (n for n in [min..max] when Math.random() < chaos and not Algo.isAccidental(n))
+      dur1 = Algo.choose [0, 1, 2]
+      dur2 = Algo.choose [1, 2, 4, 8]
+      Algo.sequencer.insert note, measure + dur1, dur2
+
+Algo.generate() and Algo.sequencer.play()
 """

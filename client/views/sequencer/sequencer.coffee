@@ -55,5 +55,9 @@ class Sequencer
       Algo.instrument.noteOn note.note, time + note.start
       Algo.instrument.noteOff note.note, time + note.start + note.duration
 
+  clear: ->
+    @notes = []
+    @$grid.empty()
+
 Template.sequencer.rendered = ->
   Algo.sequencer = new Sequencer $('#piano-roll'), 31, 88
