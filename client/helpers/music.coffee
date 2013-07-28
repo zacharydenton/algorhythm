@@ -51,3 +51,6 @@ Algo.octave = (note) ->
 
 Algo.isAccidental = (note) ->
   Algo.name(note).length == 3
+
+Algo.choose = (array) ->
+  array[_.random(array.length - 1)]

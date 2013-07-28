@@ -12,6 +12,7 @@ class Algo.Instrument
 
   noteOn: (note, time) ->
     time ?= Algo.audioContext.currentTime
+    console.log "noteOn: #{note}, #{time}"
     buffer = @buffers[note - @minNote]
     source = Algo.audioContext.createBufferSource()
     source.connect @output
@@ -22,6 +23,7 @@ class Algo.Instrument
 
   noteOff: (note, time) ->
     time ?= Algo.audioContext.currentTime
+    console.log "noteOff: #{note}, #{time}"
     @sources[note - @minNote].stop time
 
   connect: (target) ->
