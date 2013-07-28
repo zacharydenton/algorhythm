@@ -35,6 +35,10 @@ h1 { font-size: @size-huge; }
 h2 { font-size: @size-large; }
 h3 { font-size: @size-base; }
 
+::-webkit-scrollbar {
+	display: none;
+}
+
 #editor, #sequencer, #controls {
 	position: absolute;
 }
@@ -110,6 +114,7 @@ h3 { font-size: @size-base; }
 			position: absolute;
 			height: @size-base;
 			background-color: #cda869;
+			.box-shadow(0 0 10px black);
 		}
 	}
 }

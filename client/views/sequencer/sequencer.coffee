@@ -56,4 +56,4 @@ class Sequencer
       Algo.instrument.noteOff note.note, time + note.start + note.duration
 
 Template.sequencer.rendered = ->
-  Algo.sequencer = new Sequencer $('#piano-roll'), 21, 108
+  Algo.sequencer = new Sequencer $('#piano-roll'), 31, 88
