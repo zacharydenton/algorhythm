@@ -33,3 +33,33 @@ then run `mrt` in the root of the repository:
 $ sudo npm install -g meteorite
 $ mrt
 ```
+
+## Examples
+
+```coffee
+# Press ctrl-alt-enter to evaluate code
+# Press ctrl-enter to eval current line
+# Press shift-enter to eval selection
+
+Algo.register 'minNote', 31, 88, 60
+Algo.register 'maxNote', 31, 88, 71
+Algo.register 'chaos', 1, 100, 62
+
+up = true
+
+Algo.update = ->
+  min = Algo.note.fromMIDI(Algo.get 'minNote')
+  max = Algo.note.fromMIDI(Algo.get 'maxNote')
+  chaos = 0.01 * Algo.get 'chaos'
+  range = (note for note in Algo.range(min, max) when not note.accidental())
+  
+  if Math.random() < chaos
+    root = Algo.choose range
+    notes = root.chord('major').notes()
+    unless up
+      notes = notes.reverse()
+    up = not up
+    Algo.strum notes
+    
+Algo.sequencer.play()
+```
