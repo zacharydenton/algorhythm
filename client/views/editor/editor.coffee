@@ -1,3 +1,10 @@
+autocomplete = (cm) ->
+  if cm.getCursor().ch == 0
+    spaces = Array(cm.getOption("indentUnit") + 1).join(" ")
+    cm.replaceSelection(spaces, "end", "+input")
+  else
+    CodeMirror.showHint cm, CodeMirror.coffeescriptHint
+
 Template.editor.rendered = ->
   opts =
     theme: 'ambiance'
@@ -9,11 +16,13 @@ Template.editor.rendered = ->
     electricChars: on
     lineNumbers: on
     autofocus: on
-    extraKeys: "Tab": "autocomplete"
-  CodeMirror.commands.autocomplete = (cm) ->
-    if cm.getCursor().ch == 0
-      spaces = Array(cm.getOption("indentUnit") + 1).join(" ")
-      cm.replaceSelection(spaces, "end", "+input")
-    else
-      CodeMirror.showHint cm, CodeMirror.coffeescriptHint
+    extraKeys:
+      "Tab": "autocomplete"
+      "Ctrl-Enter": "evalSelection"
+      "Ctrl-Alt-Enter": "evalAll"
+  CodeMirror.commands.autocomplete = autocomplete
+  CodeMirror.commands.evalAll = (cm) ->
+    Algo.eval cm.getValue()
+  CodeMirror.commands.evalSelection = (cm) ->
+    Algo.eval cm.getSelection()
   CodeMirror @find('#editor'), opts

@@ -2,24 +2,8 @@
 
 class Algo.Metronome
   constructor: ->
-    $('[data-text-slider]').textslider()
     @beatCount = 0
-    @delay = App.audioContext.createDelayNode()
-    @lastBeat = App.audioContext.currentTime
-    @noteLengths = 
-      "1/32":   1/8
-      "1/16T":  (1 / 4) * 2 / 3
-      "1/32.":  (1 / 8) * 3 / 2
-      "1/16":   1/4
-      "1/8T":   (1 / 2) * 2 / 3
-      "1/16.":  (1 / 4) * 3 / 2
-      "1/8":    1 / 2
-      "1/4T":   1 * 2 / 3
-      "1/8.":   (1 / 2) * 3 / 2
-      "1/4":    1
-      "1/2T":   2 * 2 / 3
-      "1/2":    2
-      "1/4.":   1 * 3 / 2
+    @lastBeat = Algo.audioContext.currentTime
     unless Session.get('bpm')?
       Session.set 'bpm', 120
 
@@ -43,13 +27,9 @@ class Algo.Metronome
     lastMeasure + offset * (4 * @spb())
 
   updateLast: ->
-    while App.audioContext.currentTime - @lastBeat > @spb()
+    while Algo.audioContext.currentTime - @lastBeat > @spb()
       @beatCount += 1
       @lastBeat += @spb()
-
-  updateNoteLength: (division) ->
-    division ?= @noteLengths[6]
-    @delay = 0.37299 / 44100.0 + 60 * division / @bpm()
 
 Algo.toFrequency = (note) ->
   Math.pow(2, (note - 69) / 12) * 440.0
