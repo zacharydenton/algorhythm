@@ -46,20 +46,23 @@ Algo.register 'maxNote', 31, 88, 71
 Algo.register 'chaos', 1, 100, 62
 
 up = true
+prev = null
 
 Algo.update = ->
   min = Algo.note.fromMIDI(Algo.get 'minNote')
   max = Algo.note.fromMIDI(Algo.get 'maxNote')
   chaos = 0.01 * Algo.get 'chaos'
-  range = (note for note in Algo.range(min, max) when not note.accidental())
   
-  if Math.random() < chaos
-    root = Algo.choose range
-    notes = root.chord('major').notes()
-    unless up
-      notes = notes.reverse()
-    up = not up
-    Algo.strum notes
+  if prev? and Math.random() > chaos
+    root = Algo.choose prev.enharmonics()
+  else
+    root = Algo.choose Algo.range(min, max)
+    
+  notes = root.chord('major').notes()
+  unless up
+    notes = notes.reverse()
+  up = not up
+  Algo.strum notes
     
 Algo.sequencer.play()
 ```
