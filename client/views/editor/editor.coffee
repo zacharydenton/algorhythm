@@ -34,23 +34,30 @@ Template.editor.rendered = ->
 # Press ctrl-enter to eval current line
 # Press shift-enter to eval selection
 
-Algo.register 'duration'
+Algo.register 'chaos', 1, 100, 62
+Algo.register 'density'
 Algo.register 'minNote', 31, 88, 60
 Algo.register 'maxNote', 31, 88, 71
-Algo.register 'chaos', 1, 100, 22
 
-Algo.generate = ->
-  duration = Algo.get 'duration'
-  min = Algo.get 'minNote'
-  max = Algo.get 'maxNote'
+prev = null
+
+Algo.update = ->
   chaos = 0.01 * Algo.get 'chaos'
-
-  Algo.sequencer.clear()
-  for measure in [0..duration]
-    for note in (n for n in [min..max] when Math.random() < chaos and not Algo.isAccidental(n))
-      dur1 = Algo.choose [0..2]
-      dur2 = Algo.choose [2, 4]
-      Algo.sequencer.insert note, measure + dur1, dur2
-
-Algo.generate() and Algo.sequencer.play()
+  density = 0.01 * Algo.get 'density'
+  min = Algo.note.fromMIDI(Algo.get 'minNote')
+  max = Algo.note.fromMIDI(Algo.get 'maxNote')
+  
+  if Math.random() > density
+    return
+    
+  if prev? and Math.random() > chaos
+    root = Algo.choose prev.enharmonics()
+  else
+    root = Algo.choose Algo.range(min, max)
+    
+  for note in root.chord('major').notes()
+    duration = Algo.choose [1..4]
+    Algo.sequencer.insert note, duration
+    
+Algo.sequencer.play()
 """

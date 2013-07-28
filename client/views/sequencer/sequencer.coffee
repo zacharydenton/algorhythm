@@ -12,14 +12,15 @@ class Sequencer
     @$keyboard = $('<ul>')
     @$keyboard.addClass 'keyboard'
   
-    _.each [@maxNote..@minNote], (note) => # A0 to C8
+    _.each [@maxNote..@minNote], (midiNote) => # A0 to C8
       $key = $('<li>')
-      if Algo.isAccidental(note)
+      note = Algo.note.fromMIDI midiNote
+      if note.accidental()
         $key.addClass 'accidental'
 
       @$keyboard.append $key
       
-      unless Algo.isAccidental(note)
+      unless note.accidental()
         $spacer = $('<li>')
         $spacer.addClass 'spacer'
         @$keyboard.append $spacer
@@ -43,11 +44,12 @@ class Sequencer
       duration: duration * Algo.metronome.spb()
       $el: $note
     $note.addClass 'note'
-    offset = (@maxNote - note - 0.5) * (@$keyboard.height() / (@maxNote - @minNote))
+    offset = (@maxNote - (note.key() + 20) - 0.5) * (@$keyboard.height() / (@maxNote - @minNote))
     $note.css 'top', offset
     $note.css 'left', @pixelsPerSecond * noteObj.start
-    $note.css 'width', @pixelsPerSecond * noteObj.duration
+    $note.width (@pixelsPerSecond * noteObj.duration)
     @$grid.append $note
+    @$grid.width (@$grid.width() + $note.width())
     @notes[start] ?= []
     @notes[start].push noteObj
     noteObj
@@ -65,6 +67,7 @@ class Sequencer
   clear: ->
     @notes = []
     @$grid.empty()
+    @$grid.css 'width', 'auto'
 
   schedule: =>
     currentTime = Algo.audioContext.currentTime
@@ -74,8 +77,8 @@ class Sequencer
       if @notes[@current]?
         for note in @notes[@current]
           contextPlayTime = note.start + @startTime
-          Algo.instrument.noteOn note.note, contextPlayTime
-          Algo.instrument.noteOff note.note, contextPlayTime + note.duration
+          Algo.noteOn note.note, contextPlayTime
+          Algo.noteOff note.note, contextPlayTime + note.duration
 
       @advanceBeat()
 

@@ -31,26 +31,18 @@ class Algo.Metronome
       @beatCount += 1
       @lastBeat += @spb()
 
-noteNames = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]
-
-Algo.name = (note) ->
-  "#{noteNames[note % 12]}#{Algo.octave note}"
-
-Algo.note = (name) ->
-  if name.length == 3
-    letter = name.slice(0, -1)
-    octave = parseInt name[2]
-  else
-    letter = name[0]
-    octave = parseInt name[1]
-  index = _.indexOf noteNames, letter
-  (12 * (octave + 1)) + index
-
-Algo.octave = (note) ->
-  Math.floor(note / 12) - 1
-
-Algo.isAccidental = (note) ->
-  Algo.name(note).length == 3
+Algo.range = (minNote, maxNote) ->
+  result = []
+  min = minNote.key()
+  max = maxNote.key()
+  for key in [min..max]
+    result.push Algo.note.fromKey(key)
+  return result
 
 Algo.choose = (array) ->
   array[_.random(array.length - 1)]
+
+Meteor.startup ->
+  Algo.note = teoria.note
+  Algo.chord = teoria.chord
+  Algo.scale = teoria.scale

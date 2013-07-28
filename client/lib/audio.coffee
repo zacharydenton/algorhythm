@@ -14,8 +14,18 @@ Meteor.startup ->
 
 Algo.noteOn = (note, time) ->
   time ?= Algo.audioContext.currentTime
-  console.log "noteOn: #{note}, #{time}"
+  midi = note.key() + 20
+  Algo.instrument.noteOn midi, time
 
 Algo.noteOff = (note, time) ->
   time ?= Algo.audioContext.currentTime
-  console.log "noteOff: #{note}, #{time}"
+  midi = note.key() + 20
+  Algo.instrument.noteOff midi, time
+
+Algo.strum = (notes, startTime, speed) ->
+  startTime ?= Algo.audioContext.currentTime
+  speed ?= 0.05
+  start = startTime
+  for note in notes
+    Algo.noteOn note, start
+    start += speed
